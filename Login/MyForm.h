@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <cstdlib>
+#include "Contenido.h"
 
 namespace Login {
 
@@ -57,7 +58,7 @@ namespace Login {
 		System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
-		/// <summary>
+		/// <summary>s
 		/// Método necesario para admitir el Diseñador. No se puede modificar
 		/// el contenido de este método con el editor de código.
 		/// </summary>
@@ -117,7 +118,7 @@ namespace Login {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(887, 473);
+			this->ClientSize = System::Drawing::Size(830, 375);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->valoresSuma);
 			this->Controls->Add(this->label2);
@@ -136,6 +137,13 @@ namespace Login {
 			int resultado = Single::Parse(this->sumaEsperada->Text);
 			if (resultado == MyForm::suma) {
 				MessageBox::Show("Bienvenido, has entrado");
+				Contenido^ Inicio = gcnew Contenido("Hola mundo");
+				Contenido^ Inicio2 = gcnew Contenido("Hola ventana 2");
+				this->Visible = false;
+				Inicio->ShowDialog();
+				Inicio2->ShowDialog();
+				this->Visible = true;
+
 			}
 			else {
 				if (i < 2) {
