@@ -10,6 +10,7 @@ namespace DataGridProyecto {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace MySql::Data::MySqlClient;
 
 	/// <summary>
 	/// Resumen de MyForm
@@ -140,6 +141,24 @@ namespace DataGridProyecto {
 		}
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		MySqlConnection^ conexion = gcnew MySqlConnection("Server=localhost;Port=3306;Database=nascor;Uid=root;Pwd=;");
+
+		try
+		{
+			conexion->Open();
+			MessageBox::Show("¡Conexión exitosa!");
+
+			// Aquí puedes realizar operaciones con la base de datos
+
+			conexion->Close();
+		}
+		catch (Exception^ ex)
+		{
+			MessageBox::Show("Error al conectar a la base de datos: " + ex->Message);
+		}
+
+
 		array<Persona^>^ datos = gcnew array<Persona^>{
 			gcnew Persona(27, "Sebastian", "primercorreo@gmail.com", "C++"),
 				gcnew Persona(27, "Melissa", "segundocorreo@gmail.com", "Java"),
