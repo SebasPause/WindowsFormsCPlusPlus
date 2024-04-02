@@ -1,3 +1,4 @@
+#include "Alumno.h"
 #pragma once
 
 namespace Prueba1 {
@@ -15,23 +16,15 @@ namespace Prueba1 {
 	public ref class Contenido : public System::Windows::Forms::Form
 	{
 	public:
-		String^ nombreCompleto;
-		String^ correo;
-		String^ cursos;
-		int edad;
-		float notaMedia;
+		Alumno^ alumno;
 	public:
-		Contenido(String^ nombreCompleto, String^ correo, String^ cursos, int edad, float notaMedia)
+		Contenido(Alumno^ alumno)
 		{
 			InitializeComponent();
 			//
 			//TODO: agregar código de constructor aquí
 			//
-			this->nombreCompleto = nombreCompleto;
-			this->correo = correo;
-			this->cursos = cursos;
-			this->edad = edad;
-			this->notaMedia = notaMedia;
+			this->alumno = alumno;
 		}
 
 	protected:
@@ -87,11 +80,11 @@ namespace Prueba1 {
 		}
 #pragma endregion
 	private: System::Void Contenido_Load(System::Object^ sender, System::EventArgs^ e) {
-		this->label1->Text = "Datos\n" + "Nombre: " + nombreCompleto + 
-			"\nCorreo: " + correo +
-			"\nEdad: "+edad +
-			"\nCursos: " + cursos +
-			"\nNota media: "+ notaMedia;
+		this->label1->Text = "Datos\n" + "Nombre: " + this->alumno->getNombreCompleto() +
+			"\nCorreo: " + this->alumno->getCorreo() +
+			"\nEdad: "+ this->alumno->getEdad() +
+			"\nCursos: " + this->alumno->getCursos() +
+			"\nNota media: "+ this->alumno->getNota();
 	}
 	};
 }

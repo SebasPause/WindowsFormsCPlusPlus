@@ -120,7 +120,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Alumno.cpp" />
     <ClCompile Include="Contenido.cpp" />
     <ClCompile Include="MyForm.cpp" />
   </ItemGroup>

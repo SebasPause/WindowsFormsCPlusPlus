@@ -2,34 +2,38 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
+using namespace System;
+using namespace System::ComponentModel;
+using namespace System::Collections;
+using namespace System::Windows::Forms;
+using namespace System::Data;
+using namespace System::Drawing;
 
-class Alumno
+#pragma once
+ref class Alumno
 {
 
 private:
 	int edad;
 	float nota;
-	string nombreCompleto;
-	bool cPlusPlus;
-	bool cSharp;
-	bool java;
+	String^ nombreCompleto;
+	String^ correo;
+	String^ cursos;
 
 public:
 	Alumno() {}
 
-	Alumno(string nombreCompleto, float nota) {
+	Alumno(String^ nombreCompleto, float nota) {
 		this->nombreCompleto = nombreCompleto;
 		this->nota = nota;
 	}
 
-	Alumno(string nombreCompleto, float nota, int edad, bool cPlusPlus, bool cSharp, bool java) {
+	Alumno(String^ nombreCompleto, String^ correo, float nota, int edad, String^ cursos) {
 		this->nombreCompleto = nombreCompleto;
+		this->correo = correo;
 		this->nota = nota;
 		this->edad = edad;
-		this->cPlusPlus = cPlusPlus;
-		this->cSharp = cSharp;
-		this->java = java;
+		this->cursos = cursos;
 	}
 
 	void setEdad(int edad) {
@@ -48,36 +52,30 @@ public:
 		return this->nota;
 	}
 
-	void setNombreCompleto(string nombreCompleto) {
+	void setNombreCompleto(String^ nombreCompleto) {
 		this->nombreCompleto = nombreCompleto;
 	}
 
-	string getNombreCompleto() {
+	String^ getNombreCompleto() {
 		return this->nombreCompleto;
 	}
 
-	void setcPlusPlus(bool cPlusPlus) {
-		this->cPlusPlus = cPlusPlus;
+	void setCorreo(String^ correo) {
+		this->correo = correo;
 	}
 
-	bool getcPlusPlus() {
-		return this->cPlusPlus;
+	String^ getCorreo() {
+		return this->correo;
 	}
 
-	void setcSharp(bool cSharp) {
-		this->cSharp = cSharp;
+	void setCursos(String^ cursos) {
+		this->cursos = cursos;
 	}
 
-	bool getcSharp() {
-		return this->cSharp;
-	}
-
-	void setjava(bool java) {
-		this->java = java;
-	}
-
-	bool getjava() {
-		return this->java;
+	String^ getCursos() {
+		return this->cursos;
 	}
 
 };
+
+

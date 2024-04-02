@@ -1,6 +1,7 @@
 #pragma once
 #include "msclr/marshal_cppstd.h"
 #include "Contenido.h"
+#include "Alumno.h"
 
 namespace Prueba1 {
 
@@ -283,7 +284,7 @@ namespace Prueba1 {
 		   
 	private: System::Void btnEnviar_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ cursos = "";
-		Alumno alumno;
+		
 		
 
 		float sumaNotas = 0;
@@ -353,7 +354,8 @@ namespace Prueba1 {
 			return;
 		}
 
-		Contenido^ Inicio = gcnew Contenido(this->entradaUsuario->Text, this->entradaCorreo->Text,cursos,edad,media);
+		Alumno^ alumno = gcnew Alumno(this->entradaUsuario->Text, this->entradaCorreo->Text,media, edad, cursos);
+		Contenido^ Inicio = gcnew Contenido(alumno);
 		this->Visible = false;
 		Inicio->ShowDialog();
 		this->Visible = true;
