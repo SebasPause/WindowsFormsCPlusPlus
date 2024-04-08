@@ -69,6 +69,12 @@ namespace GridViewNoticias {
 
 
 
+
+
+
+
+
+
 		MySqlConnection^ conexion;
 		MySqlConnection^ CrearConexion() {
 			conexion = gcnew MySqlConnection("Server=localhost;Port=3306;Database=nascor;Uid=root;Pwd=;");
@@ -176,6 +182,7 @@ namespace GridViewNoticias {
 			this->id->HeaderText = L"ID";
 			this->id->MinimumWidth = 11;
 			this->id->Name = L"id";
+			this->id->ReadOnly = true;
 			this->id->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->id->Width = 50;
 			// 
@@ -263,10 +270,15 @@ namespace GridViewNoticias {
 	private: System::Void dataGridView1_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
 		if (e->RowIndex >= 0 && e->ColumnIndex == 5 && e->RowIndex < (dataGridView1->Rows->Count -1)) {
 			int fila = e->RowIndex;
-			String^ id = dataGridView1->Rows[fila]->Cells[0]->Value->ToString();
+			if (dataGridView1->Rows[fila]->Cells[0]->Value != nullptr) {
+				String^ id = dataGridView1->Rows[fila]->Cells[0]->Value->ToString();
 
-			q("DELETE FROM noticias WHERE id="+Convert::ToInt32(id));
-			mostrarDatos();
+				q("DELETE FROM noticias WHERE id=" + Convert::ToInt32(id));
+				mostrarDatos();
+			}
+			else {
+				MessageBox::Show("Este registro no existe en la BBDD");
+			}
 		}
 	}
 };
