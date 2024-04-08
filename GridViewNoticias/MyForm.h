@@ -75,13 +75,37 @@ namespace GridViewNoticias {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		MySqlConnection^ conexion;
 		MySqlConnection^ CrearConexion() {
 			conexion = gcnew MySqlConnection("Server=localhost;Port=3306;Database=nascor;Uid=root;Pwd=;");
 			return conexion;
 		}
 
-		MySqlDataReader^ SeleccionarDatos() {
+		void SeleccionarDatos() {
 			conexion = CrearConexion();
 			MySqlCommand^ comando = gcnew MySqlCommand("SELECT * FROM noticias", conexion);
 			MySqlDataReader^ reader = nullptr;
@@ -89,7 +113,27 @@ namespace GridViewNoticias {
 			{
 				conexion->Open();
 				reader = comando->ExecuteReader();
-				return reader;
+
+				int i = 0;
+				if (dataGridView1->Rows->Count >= 1) {
+					dataGridView1->Rows->Clear();
+					dataGridView1->Refresh();
+				}
+				while (reader->Read()) {
+					dataGridView1->Rows->Add();
+
+					dataGridView1->Rows[i]->Cells[0]->Value = reader->GetInt32(0);
+					dataGridView1->Rows[i]->Cells[1]->Value = reader->GetString(1);
+					dataGridView1->Rows[i]->Cells[2]->Value = reader->GetString(2);
+					dataGridView1->Rows[i]->Cells[3]->Value = reader->GetString(3);
+					dataGridView1->Rows[i]->Cells[4]->Value = reader->GetDateTime(4);
+					i++;
+				};
+
+				if (reader != nullptr) {
+					reader->Close();
+				}
+				conexion->Close();
 			}
 			catch (Exception^ ex)
 			{
@@ -102,7 +146,7 @@ namespace GridViewNoticias {
 			{
 				conexion->Open();
 				comando->ExecuteNonQuery();
-				MessageBox::Show("Query ejecuta correctamente.");
+				MessageBox::Show("Query ejecutada correctamente.");
 			}
 			catch (Exception^ ex)
 			{
@@ -111,29 +155,6 @@ namespace GridViewNoticias {
 			finally {
 				conexion->Close();
 			}
-		}
-		void mostrarDatos() {
-			MySqlDataReader^ reader = SeleccionarDatos();
-			int i = 0;
-			if (dataGridView1->Rows->Count >= 1) {
-				dataGridView1->Rows->Clear();
-				dataGridView1->Refresh();
-			}
-			while (reader->Read()) {
-				dataGridView1->Rows->Add();
-
-				dataGridView1->Rows[i]->Cells[0]->Value = reader->GetInt32(0);
-				dataGridView1->Rows[i]->Cells[1]->Value = reader->GetString(1);
-				dataGridView1->Rows[i]->Cells[2]->Value = reader->GetString(2);
-				dataGridView1->Rows[i]->Cells[3]->Value = reader->GetString(3);
-				dataGridView1->Rows[i]->Cells[4]->Value = reader->GetDateTime(4);
-				i++;
-			};
-
-			if (reader != nullptr) {
-				reader->Close();
-			}
-			conexion->Close();
 		}
 
 #pragma region Windows Form Designer generated code
@@ -176,6 +197,7 @@ namespace GridViewNoticias {
 			this->dataGridView1->Size = System::Drawing::Size(1002, 370);
 			this->dataGridView1->TabIndex = 3;
 			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_CellContentClick);
+			this->dataGridView1->CellEndEdit += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::actualizarFila);
 			// 
 			// id
 			// 
@@ -211,10 +233,12 @@ namespace GridViewNoticias {
 			// 
 			// eliminar
 			// 
-			this->eliminar->HeaderText = L"Eliminar";
+			this->eliminar->HeaderText = L"";
 			this->eliminar->Name = L"eliminar";
 			this->eliminar->Resizable = System::Windows::Forms::DataGridViewTriState::True;
 			this->eliminar->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			this->eliminar->Text = L"Eliminar";
+			this->eliminar->UseColumnTextForButtonValue = true;
 			// 
 			// MyForm
 			// 
@@ -232,7 +256,7 @@ namespace GridViewNoticias {
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		//Primera manera, la mas optima
-		mostrarDatos();
+		SeleccionarDatos();
 
 		/* Segunda manera
 		MySqlDataReader^ reader = SeleccionarDatos();
@@ -274,11 +298,39 @@ namespace GridViewNoticias {
 				String^ id = dataGridView1->Rows[fila]->Cells[0]->Value->ToString();
 
 				q("DELETE FROM noticias WHERE id=" + Convert::ToInt32(id));
-				mostrarDatos();
+				SeleccionarDatos();
 			}
 			else {
 				MessageBox::Show("Este registro no existe en la BBDD");
 			}
+		}
+	}
+	private: System::Void actualizarFila(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+		int fila = e->RowIndex;
+		
+		if (dataGridView1->Rows[fila]->Cells[0]->Value != nullptr) {
+			q("UPDATE noticias SET titulo='"+ dataGridView1->Rows[fila]->Cells[1]->Value->ToString() 
+				+"',texto='"+ dataGridView1->Rows[fila]->Cells[2]->Value->ToString()
+				+"',categoria='"+ dataGridView1->Rows[fila]->Cells[3]->Value->ToString()
+				+ "' WHERE id=" + dataGridView1->Rows[fila]->Cells[0]->Value->ToString());
+			SeleccionarDatos();
+		}
+		else {
+			String^ titulo = "";
+			String^ descripcion = "";
+			String^ categoria = "";
+			if (dataGridView1->Rows[fila]->Cells[1]->Value != nullptr) {
+				titulo = dataGridView1->Rows[fila]->Cells[1]->Value->ToString();
+			}
+			if (dataGridView1->Rows[fila]->Cells[2]->Value != nullptr) {
+				descripcion = dataGridView1->Rows[fila]->Cells[2]->Value->ToString();
+			}
+			if (dataGridView1->Rows[fila]->Cells[3]->Value != nullptr) {
+				categoria = dataGridView1->Rows[fila]->Cells[3]->Value->ToString();
+			}
+
+			q("INSERT INTO noticias (titulo,texto,categoria) VALUES ('" + titulo + "','" + descripcion + "','" + categoria + "')");
+			SeleccionarDatos();
 		}
 	}
 };
