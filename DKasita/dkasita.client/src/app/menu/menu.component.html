@@ -1,0 +1,46 @@
+<app-responsive (menuIzquierdaChange)="onMenuIzquierdaChange($event)">
+  <nav *ngIf="menuIzquierda">
+    <div class="navbar">
+      <div class="container nav-container">
+        <input class="checkbox" type="checkbox" name="" id="" />
+        <div class="hamburger-lines">
+          <span class="line line1"></span>
+          <span class="line line2"></span>
+          <span class="line line3"></span>
+        </div>
+        <div class="logo">
+          <h1 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">D'Kasita</h1>
+        </div>
+        <div class="menu-items">
+          <ol>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Categorias</a></li>
+            <li><a href="#">Productos</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ol>
+        </div>
+      </div>
+     </div>
+  </nav>
+</app-responsive>
+<app-responsive (menuIzquierdaChange)="onMenuIzquierdaChange($event)">
+  <nav *ngIf="!menuIzquierda" class="nav-menu">
+    <ul>
+      <li>
+        <a routerLink="/inicio">Inicio</a>
+      </li>
+      <li>
+        <a routerLink="/categorias">Categorias</a>
+      </li>
+      <li>
+        <a href="#">Productos</a>
+      </li>
+      <li>
+        <a href="#">Contacto</a>
+      </li>
+      <li>
+        <a routerLink="/registro">Registro</a>
+      </li>
+    </ul>
+  </nav>
+</app-responsive>
